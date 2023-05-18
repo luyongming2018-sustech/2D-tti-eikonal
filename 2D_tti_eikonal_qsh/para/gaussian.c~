@@ -1,0 +1,136 @@
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+
+void g_blur(float **a,int n1,int n2,int nsp,FILE *fp);
+void main()
+{
+	float **a,**b,dist1,dist2,cx,cz;
+	int nx,nz,ix,iz,nall,nn;
+	FILE *fp;
+	nx=1200;
+	nz=901;
+	nall=nx*nz;
+
+	a=(float**)calloc(nx,sizeof(float*));
+	b=(float**)calloc(nx,sizeof(float*));
+	for(ix=0;ix<nx;ix++){
+		a[ix]=(float*)calloc(nz,sizeof(float));
+		b[ix]=(float*)calloc(nz,sizeof(float));
+	}
+	
+	fp=fopen("./epsilon.bin","rb");
+	for(ix=0;ix<nx;ix++){
+		for(iz=0;iz<nz;iz++){
+			fread(&a[ix][iz],sizeof(float),1,fp);
+			//a[ix][iz]=1.0/a[ix][iz];
+		}
+	}
+	fclose(fp);
+
+	for(ix=0;ix<nx;ix++){
+		for(iz=0;iz<nz;iz++){
+			b[ix][iz]=a[ix][iz];
+		}
+	}
+
+	g_blur(b,nx,nz,20,fp);	
+
+	fp=fopen("./delta1.bin","wb");
+	for(ix=0;ix<nx;ix++){
+		for(iz=0;iz<nz;iz++){
+			//b[ix][iz]=1.0/b[ix][iz];
+			fwrite(&b[ix][iz],sizeof(float),1,fp);
+		}
+	}
+	fclose(fp);
+
+}
+
+//void operator()
+
+void g_blur(float **a,int n1,int n2,int nsp,FILE *fp)
+{
+	int n1e,n2e,i1,i2,i11,i22;
+	double PI=3.141592653;
+	float **b;
+	float **optc;
+	double a1,b1,dist1,dist2;
+	n1e=n1+2*nsp;
+	n2e=n2+2*nsp;
+	b=(float**)calloc(n1e,sizeof(float*));
+	optc=(float**)calloc(2*nsp+1,sizeof(float*));
+	for(i1=0;i1<n1e;i1++){
+		b[i1]=(float*)calloc(n2e,sizeof(float));
+		optc[i1]=(float*)calloc(2*nsp+1,sizeof(float));
+	}
+
+	for(i11=0;i11<=2.0*nsp;i11++){
+		for(i22=0;i22<=2.0*nsp;i22++){
+			dist1=i11-nsp;
+			dist2=i22-nsp;
+			optc[i11][i22]=exp(-(dist1*dist1+dist2*dist2)/(2.0*nsp/9.0*nsp));
+		}
+	}
+
+	for(i1=0;i1<n1;i1++){
+		for(i2=0;i2<n2;i2++){
+			b[i1+nsp][i2+nsp]=a[i1][i2];
+		}
+	}
+	for(i1=0;i1<n1;i1++){
+		for(i2=0;i2<nsp;i2++){
+			b[i1+nsp][i2]=a[i1][0];
+			b[i1+nsp][i2+n2+nsp]=a[i1][n2-1];
+		}
+	}
+	for(i1=0;i1<nsp;i1++){
+		for(i2=0;i2<n2;i2++){
+			b[i1][i2+nsp]=a[0][i2];
+			b[nsp+n1+i1][i2+nsp]=a[n1-1][i2];
+		}
+	}
+	for(i1=0;i1<nsp;i1++){
+		for(i2=0;i2<nsp;i2++){
+			b[i1][i2]=a[0][0];
+			b[i1][nsp+n2+i2]=a[0][n2-1];
+			b[i1+nsp+n1][i2]=a[n1-1][0];
+			b[i1+nsp+n1][i2+nsp+n2]=a[n1-1][n2-1];
+		}
+	}
+
+	for(i1=nsp;i1<n1+nsp;i1++){
+		for(i2=nsp;i2<n2+nsp;i2++){
+			a1=0;
+			printf("i1=%d\n",i1);
+			for(i11=i1-nsp;i11<=i1+nsp;i11++){
+				for(i22=i2-nsp;i22<=i2+nsp;i22++){
+					a1+=optc[i11-(i1-nsp)][i22-(i2-nsp)]*b[i11][i22];
+				}
+			}
+			a[i1-nsp][i2-nsp]=a1;
+		}
+	}	
+	a1=0;
+	for(i11=0;i11<=2.0*nsp;i11++){
+		for(i22=0;i22<=2.0*nsp;i22++){
+			dist1=i11-nsp;
+			dist2=i22-nsp;
+			b1=exp(-(dist1*dist1+dist2*dist2)/(2.0*nsp/9.0*nsp));
+			a1+=b1;
+		}
+	}
+
+	for(i1=0;i1<n1;i1++){
+		for(i2=0;i2<n2;i2++){
+			a[i1][i2]/=a1;
+		}
+	}
+	fp=fopen("file.bin","wb");
+	for(i1=0;i1<n1;i1++){
+		for(i2=0;i2<n2;i2++){
+			fwrite(&a[i1][i2],sizeof(float),1,fp);
+		}
+	}
+	fclose(fp);
+}
