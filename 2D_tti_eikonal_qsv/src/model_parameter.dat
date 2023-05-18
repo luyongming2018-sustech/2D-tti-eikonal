@@ -1,0 +1,10 @@
+isotropic media (0) or anisotropic media (1)
+1
+model size nx and nz
+1200 901
+shot location sx and sz
+600 400
+grid interval dx dz
+6
+The begain and end location (rx,rz) of the receiver 
+50 5 200 5
