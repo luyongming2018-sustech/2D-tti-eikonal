@@ -6,8 +6,9 @@ luym@sustech.edu.cn
 #### Description
 {**Traveltime calculations for three wave modes*}
 
-1. cd /2D_tti_eikonal_qp or cd /2D_tti_eikonal_qsv or cd /2D_tti_eikonal_qsh;
-you need to copy the file para to /2D_tti_eikonal_qsv and /2D_tti_eikonal_qsh.
+1. We take the qP wave as an quick-test example. First, cd /2D_tti_eikonal_qp.
+  If you calculte qSV and qSH wave traveltime, cd /2D_tti_eikonal_qsv or cd /2D_tti_eikonal_qsh;
+  you need to copy the file para to /2D_tti_eikonal_qsv and /2D_tti_eikonal_qsh.
 2. cd /src, make
 3. run: ./travel  
 4. obtaining the traveltime results in data file, you can use xcontour or matlab to plot the traveltime.
