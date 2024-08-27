@@ -3,15 +3,60 @@
 #Calculating traveltimes in 2D general tilted transversely isotropic media using fast sweeping method
 luym@sustech.edu.cn
 
-#### Description
-{**Traveltime calculations for three wave modes*}
 
-1. We take the qP wave as an quick-test example. First, cd /2D_tti_eikonal_qp.
-  If you calculte qSV and qSH wave traveltime, cd /2D_tti_eikonal_qsv or cd /2D_tti_eikonal_qsh;
-  you need to copy the file para to /2D_tti_eikonal_qsv and /2D_tti_eikonal_qsh.
-2. cd /src, make
-3. run: ./travel  
-4. obtaining the traveltime results in data file, you can use xcontour or matlab to plot the traveltime.
+2D-TTI-Eikonal: Calculating Traveltimes in 2D General Tilted Transversely Isotropic Media Using the Fast Sweeping Method
+Introduction
+This module is designed to calculate traveltimes for different wave modes (qP, qSV, and qSH) in 2D general tilted transversely isotropic (TTI) media. The fast sweeping method is employed to ensure computational efficiency and accuracy, making this tool suitable for geophysical applications that require precise traveltime computations in complex anisotropic media.
 
-If you change the vel model, put the parameters into para file.
-Then cd src file and change the corresponding model_parameter.dat
+Wave Mode Calculation
+The module supports three wave modes:
+
+1.qP Wave Mode:
+To calculate traveltimes for the qP wave, navigate to the 2D_tti_eikonal_qp directory:
+cd /2D_tti_eikonal_qp
+Run the calculation following the steps outlined below.
+
+2.qSV Wave Mode:
+For qSV wave traveltimes, navigate to the 2D_tti_eikonal_qsv directory:
+cd /2D_tti_eikonal_qsv
+Ensure that the parameter file is copied to the corresponding directory:
+cp para /2D_tti_eikonal_qsv/
+Continue with the steps for running the calculation.
+
+3.qSH Wave Mode:
+To calculate qSH wave traveltimes, navigate to the 2D_tti_eikonal_qsh directory:
+cd /2D_tti_eikonal_qsh
+Again, copy the parameter file to the directory:
+cp para /2D_tti_eikonal_qsh/
+Follow the remaining steps to compute the traveltimes.
+Running the Simulation
+
+Compile the Source Code:
+First, navigate to the source directory:
+cd /src
+Compile the source code using the make command:
+make
+This will generate the executable file necessary to run the traveltime calculation.
+Execute the Traveltime Calculation:
+Run the traveltime computation by executing the following command:
+./travel
+
+The output will be generated in the form of data files that contain the calculated traveltimes.
+Visualizing the Results:
+
+To visualize the traveltime results, you can use xcontour or MATLAB. These tools allow for the plotting of the traveltime data, enabling you to analyze the results graphically.
+Modifying the Velocity Model
+If you need to change the velocity model parameters:
+
+Update the Parameter File:
+
+Modify the para file with the desired parameters for your new velocity model.
+Update the Model Parameter File:
+
+Navigate to the src directory:
+cd /src
+Modify the model_parameter.dat file to reflect the new model settings.
+Recompile and Rerun:
+
+After making the necessary changes, recompile the source code by running make in the src directory, then execute the traveltime calculation as described above.
+This workflow allows for flexibility in testing different wave modes and velocity models, making it a versatile tool for traveltime computation in 2D TTI media.
