@@ -15,19 +15,19 @@ The module supports three wave modes:
 
 1.qP Wave Mode:
 To calculate traveltimes for the qP wave, navigate to the 2D_tti_eikonal_qp directory:
-cd /2D_tti_eikonal_qp;
+cd /2D_tti_eikonal_qp; 'makdir data' to put the calculation results;
 Run the calculation following the steps outlined below.
 
 2.qSV Wave Mode:
 For qSV wave traveltimes, navigate to the 2D_tti_eikonal_qsv directory:
-cd /2D_tti_eikonal_qsv;
+cd /2D_tti_eikonal_qsv;'makdir data' to put the calculation results;
 Ensure that the parameter file is copied to the corresponding directory:
 cp para /2D_tti_eikonal_qsv/;
 Continue with the steps for running the calculation.
 
 3.qSH Wave Mode:
 To calculate qSH wave traveltimes, navigate to the 2D_tti_eikonal_qsh directory:
-cd /2D_tti_eikonal_qsh;
+cd /2D_tti_eikonal_qsh;'makdir data' to put the calculation results;
 Again, copy the parameter file to the directory:
 cp para /2D_tti_eikonal_qsh/;
 Follow the remaining steps to compute the traveltimes.
